@@ -19,9 +19,10 @@ class AlgoliaIndexTask extends BuildTask
 {
 
     protected $title = 'DirectLease AlgoliaIndexTask';
-    protected $description = "This task will synchronize all Pages with ShowSearch on true with algolia. To perform a clean run use param fullsync=1";
+    protected $description = "This task will synchronize all Pages with ShowSearch on true with algolia. To perform a full wipe/insert use param fullsync=1";
 
     protected $enabled = true;
+    protected $fluent_enabled = false;
 
     public function run($request)
     {
@@ -33,6 +34,8 @@ class AlgoliaIndexTask extends BuildTask
         $index = $client->initIndex(
             Config::inst()->get('AlgoliaKeys', 'indexName')
         );
+        // Check if Fluent is installed if it is enabled will add locales object to algolia containing localised data
+        $this->fluent_enabled = Page::has_extension("TractorCow\Fluent\Extension\FluentExtension");
         // do either a fullsync add/remove all algolia data or sync the changes from the last task
         if($request->getVar('fullsync')) {
             $this->fullSync($index);
@@ -68,11 +71,12 @@ class AlgoliaIndexTask extends BuildTask
      *
      * @param $index algolia index
      * @param $pages pages that needs to be added to the index
+     * @param $fluent boolean if fluent is installed
      * @param $update boolean If the sync is an update, if false it creates a PageAlgoliaObjectIDHolder
      * @return int the count of pages being synced
      * @throws \SilverStripe\ORM\ValidationException
      */
-    private function syncPagesWithIndex($index, $pages, $update = false) {
+    private function syncPagesWithIndex($index, $pages, $fluent, $update = false) {
         $dataForAlgolia = [];
         foreach ($pages as $page) {
             $algoliaObject = [];
@@ -83,8 +87,12 @@ class AlgoliaIndexTask extends BuildTask
             // add image Link if in config yml array in algolia.yml
             $algoliaObject = $this->addImageLinkToObjectIfSetOnPage($page, Config::inst()->get('AlgoliaSyncImagesNonlocalised'), $algoliaObject);
            // If Fluent is installed add localised data
-           if (method_exists($page, "getLocaleInstances")) {
+           if ($this->fluent_enabled) {
                 $algoliaObject = $this->addDataForEveryLocale($page, $algoliaObject);
+           }
+           // add default config not for every locale but at the root of algoliaobject
+           else {
+               $algoliaObject = $this->addDefaultData($page, $algoliaObject);
            }
            $dataForAlgolia[] = $algoliaObject;
     
@@ -96,6 +104,18 @@ class AlgoliaIndexTask extends BuildTask
         }
         return sizeof($dataForAlgolia);
     }
+    
+    /**
+     * Add localised data for every locale to the algolia object 
+     * 
+     * If Fluent is enabled a page might have DB/Images values that are different in every locale.
+     * If these variabeles are set in AlgoliaSyncFieldslocalised or AlgoliaSyncImageslocalised they will be added to the algoliaOjbect
+     * $algoliaObject->Locales->Locale->Key => value 
+     * 
+     * @param $page
+     * @param $algoliaObject
+     * @return mixed
+     */
     private function addDataForEveryLocale($page, $algoliaObject) {
         $locales = $page->getLocaleInstances();
         foreach ($locales as $locale) {
@@ -104,17 +124,7 @@ class AlgoliaIndexTask extends BuildTask
                     $state->setLocale($locale->Locale);
                     // we need to get the page again since our fluent context is changed and we want to get the localised data
                     $page = Versioned::get_by_stage('Page', 'Live')->byID($page->ID);
-                    $algoliaObject['Locales'][$locale->Locale]['Title'] = $page->Title;
-                    // in current context we get the stage url we do not wan't to fill in algolia
-                    if ($page->ClassName == RedirectorPage::class) {
-                        $link = $page->Link();
-                        $link = str_replace("/?stage=Stage", "", $link);
-                        $algoliaObject['Locales'][$locale->Locale]['Url'] = $link;
-                    } // normal pages will return a normal urL
-                    else {
-                        $algoliaObject['Locales'][$locale->Locale]['Url'] = $page->Link();
-                    }
-                    $algoliaObject['Locales'][$locale->Locale]['MenuTitle'] = $page->MenuTitle;
+                    $algoliaObject['Locales'][$locale->Locale] = $this->addDefaultData($page, $algoliaObject);
                     // add fieldvalue for key in config yml array in algolia.yml
                     $algoliaObject['Locales'][$locale->Locale] = $this->addFieldDataToObjectIfsetOnPage($page, Config::inst()->get('AlgoliaSyncFieldslocalised'), $algoliaObject['Locales'][$locale->Locale]);
                     // add image Link if in config yml array in algolia.yml
@@ -125,7 +135,31 @@ class AlgoliaIndexTask extends BuildTask
         }
         return $algoliaObject;
     }
-
+    
+    /**
+     * Add default data to the algoliaobject
+     *
+     * adds title, url and menutitle
+     *
+     * @param $page
+     * @param $algoliaObject
+     * @return mixed
+     */
+    private function addDefaultData($page, $algoliaObject) {
+        $algoliaObject['Title'] = $page->Title;
+        // in current context we get the stage url we do not wan't to fill in algolia
+        if ($page->ClassName == RedirectorPage::class) {
+            $link = $page->Link();
+            $link = str_replace("/?stage=Stage", "", $link);
+            $algoliaObject['Url'] = $link;
+        } // normal pages will return a normal urL
+        else {
+            $algoliaObject['Url'] = $page->Link();
+        }
+        $algoliaObject['MenuTitle'] = $page->MenuTitle;
+        return $algoliaObject;
+    }
+    
     /**
      * For every field in the config check if the page has that field and if it contains data add it to the object
      *
@@ -250,7 +284,10 @@ class AlgoliaIndexTask extends BuildTask
     }
 
     /**
-     *
+     * Add newly created Pages to Algolia
+     * 
+     * Compare the PageAlgoliaObjectIDHolder ID's against the PageID's to find pages that have not been synced yet and sync those to algolia
+     * 
      * @param $index algolia index
      * @return int count of added Pages
      * @throws \SilverStripe\ORM\ValidationException
