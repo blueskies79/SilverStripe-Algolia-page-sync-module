@@ -10,7 +10,6 @@ use SilverStripe\Core\Injector\Injector;
 use Psr\Log\LoggerInterface;
 use SilverStripe\ORM\DB;
 use Algolia\AlgoliaSearch\SearchClient;
-use Composer\InstalledVersions;
 
 /**
  * Class AlgoliaIndexTask Read more https://directlease.atlassian.net/wiki/spaces/DZS/pages/1778253825/AlgoliaIndexTask
@@ -84,7 +83,7 @@ class AlgoliaIndexTask extends BuildTask
             // add image Link if in config yml array in algolia.yml
             $algoliaObject = $this->addImageLinkToObjectIfSetOnPage($page, Config::inst()->get('AlgoliaSyncImagesNonlocalised'), $algoliaObject);
            // If Fluent is installed add localised data
-           if (InstalledVersions::getVersion("tractorcow/silverstripe-fluent")) {
+           if (method_exists($page->getLocaleInstances())) {
                 $algoliaObject = $this->addDataForEveryLocale($page, $algoliaObject);
            }
            $dataForAlgolia[] = $algoliaObject;

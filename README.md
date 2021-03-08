@@ -26,7 +26,6 @@ It will log to SilverStripe.log and a a record will be created after the task ha
 ## Requirements
 
 * SilverStripe ^4.0
-* composer v2 (to see if Fluent is installed)
 
 Fluent support 
 
