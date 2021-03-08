@@ -86,9 +86,9 @@ class AlgoliaIndexTask extends BuildTask
             $algoliaObject = $this->addImageLinkToObjectIfSetOnPage($page, Config::inst()->get('AlgoliaSyncImagessNonlocalised'), $algoliaObject);
            // If Fluent is installed add localised data
            if (InstalledVersions::getVersion("tractorcow/silverstripe-fluent")) {
-                $algoliaObject = $this->addDataForEveryLocale();
-            }
-            $dataForAlgolia[] = $algoliaObject;
+                $algoliaObject = $this->addDataForEveryLocale($page, $algoliaObject);
+           }
+           $dataForAlgolia[] = $algoliaObject;
     
         }
         $index->saveObjects($dataForAlgolia, ['autoGenerateObjectIDIfNotExist' => true]);
@@ -98,7 +98,7 @@ class AlgoliaIndexTask extends BuildTask
         }
         return sizeof($dataForAlgolia);
     }
-        private function addDataForEveryLocale($page, $algoliaObject) {
+    private function addDataForEveryLocale($page, $algoliaObject) {
         $locales = $page->getLocaleInstances();
         foreach ($locales as $locale) {
             $algoliaObject = FluentState::singleton()
