@@ -1,6 +1,10 @@
 ---
-Name: SilverStripe Algolia page sync module
+Name: algoliapagesyncmoduleconfig
 ---
+AlgoliaKeys:
+  adminApiKey: '' # Algolia Admin API KEY
+  applicationId: '' # Algolia App ID
+  indexName: 'sitecontent' # default name of the index the pages will be synced in
 Page:
   Extensions:
     - AlgoliaSyncModuleDirectLease\PageAlgoliaExtension

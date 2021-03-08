@@ -54,6 +54,10 @@ The default values that will be added are:
 Page:
   Extensions:
     - AlgoliaSyncModuleDirectLease\PageAlgoliaExtension
+AlgoliaKeys:
+  adminApiKey: '' # Algolia Admin API KEY
+  applicationId: '' # Algolia App ID
+  indexName: 'sitecontent' # default name of the index the pages will be synced in 
 AlgoliaSyncFieldslocalised:
 AlgoliaSyncFieldsNonlocalised:
 AlgoliaSyncImageslocalised:
@@ -67,6 +71,10 @@ A Config with Fluent support
 Page:
  Extensions:
   - AlgoliaSyncModuleDirectLease\PageAlgoliaExtension
+AlgoliaKeys:
+  adminApiKey: '' # Algolia Admin API KEY
+  applicationId: '' # Algolia App ID
+  indexName: 'sitecontent' # default name of the index the pages will be synced in 
 AlgoliaSyncFieldslocalised:
  - "MyAwesomeSearchTextHolder"
  - "MyAwesomeSearchTextHolder2"
@@ -83,6 +91,10 @@ A config without fluent support
 Page:
  Extensions:
   - AlgoliaSyncModuleDirectLease\PageAlgoliaExtension
+AlgoliaKeys:
+  adminApiKey: '' # Algolia Admin API KEY
+  applicationId: '' # Algolia App ID
+  indexName: 'sitecontent' # default name of the index the pages will be synced in 
 AlgoliaSyncFieldslocalised:
 AlgoliaSyncFieldsNonlocalised:
  - "MyAwesomeSearchTextHolder"

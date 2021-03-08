@@ -33,7 +33,7 @@ class AlgoliaIndexTask extends BuildTask
             Config::inst()->get('AlgoliaKeys', 'adminApiKey')
         );
         $index = $client->initIndex(
-            'sitecontent' // default index for pages make sure this is als in the algolia.yaml for current env
+            Config::inst()->get('AlgoliaKeys', 'indexName')
         );
         // do either a fullsync add/remove all algolia data or sync the changes from the last task
         if($request->getVar('fullsync')) {
