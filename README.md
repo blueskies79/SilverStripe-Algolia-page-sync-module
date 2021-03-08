@@ -61,13 +61,18 @@ AlgoliaKeys:
 AlgoliaSyncFieldslocalised:
 AlgoliaSyncFieldsNonlocalised:
 AlgoliaSyncImageslocalised:
-AlgoliaSyncImagessNonlocalised:
+AlgoliaSyncImagesNonlocalised:
 ```
 
 
 ## Example configuration (optional)
 A Config with Fluent support 
 ```yaml
+---
+name: 'my overide'
+After:
+  - '#algoliapagesyncmoduleconfig'
+---
 Page:
  Extensions:
   - AlgoliaSyncModuleDirectLease\PageAlgoliaExtension
@@ -82,12 +87,17 @@ AlgoliaSyncFieldsNonlocalised:
  - "MyAwesomeSearchTextHolderNonLocalised"
 AlgoliaSyncImageslocalised:
  - "MyAwesomeImage"
-AlgoliaSyncImagessNonlocalised:
+AlgoliaSyncImagesNonlocalised:
  - "MyAwesomeImageButNonLocalised"
 ```
 A config without fluent support
 
 ```yaml
+---
+name: 'my overide'
+After:
+  - '#algoliapagesyncmoduleconfig'
+---
 Page:
  Extensions:
   - AlgoliaSyncModuleDirectLease\PageAlgoliaExtension
@@ -99,7 +109,7 @@ AlgoliaSyncFieldslocalised:
 AlgoliaSyncFieldsNonlocalised:
  - "MyAwesomeSearchTextHolder"
 AlgoliaSyncImageslocalised:
-AlgoliaSyncImagessNonlocalised:
+AlgoliaSyncImagesNonlocalised:
  - "MyAwesomeImage"
  - "MyAwesomeImage2"
 

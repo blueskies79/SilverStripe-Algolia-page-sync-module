@@ -83,7 +83,7 @@ class AlgoliaIndexTask extends BuildTask
             // add fieldvalue for key in config yml array in algolia.yml
             $algoliaObject = $this->addFieldDataToObjectIfsetOnPage($page, Config::inst()->get('AlgoliaSyncFieldsNonlocalised'), $algoliaObject);
             // add image Link if in config yml array in algolia.yml
-            $algoliaObject = $this->addImageLinkToObjectIfSetOnPage($page, Config::inst()->get('AlgoliaSyncImagessNonlocalised'), $algoliaObject);
+            $algoliaObject = $this->addImageLinkToObjectIfSetOnPage($page, Config::inst()->get('AlgoliaSyncImagesNonlocalised'), $algoliaObject);
            // If Fluent is installed add localised data
            if (InstalledVersions::getVersion("tractorcow/silverstripe-fluent")) {
                 $algoliaObject = $this->addDataForEveryLocale($page, $algoliaObject);
@@ -120,7 +120,7 @@ class AlgoliaIndexTask extends BuildTask
                     // add fieldvalue for key in config yml array in algolia.yml
                     $algoliaObject['Locales'][$locale->Locale] = $this->addFieldDataToObjectIfsetOnPage($page, Config::inst()->get('AlgoliaSyncFieldslocalised'), $algoliaObject['Locales'][$locale->Locale]);
                     // add image Link if in config yml array in algolia.yml
-                    $algoliaObject['Locales'][$locale->Locale] = $this->addImageLinkToObjectIfSetOnPage($page, Config::inst()->get('AlgoliaSyncImagesslocalised'), $algoliaObject['Locales'][$locale->Locale]);
+                    $algoliaObject['Locales'][$locale->Locale] = $this->addImageLinkToObjectIfSetOnPage($page, Config::inst()->get('AlgoliaSyncImageslocalised'), $algoliaObject['Locales'][$locale->Locale]);
                 
                     return $algoliaObject;
                 });
