@@ -83,7 +83,7 @@ class AlgoliaIndexTask extends BuildTask
             // add image Link if in config yml array in algolia.yml
             $algoliaObject = $this->addImageLinkToObjectIfSetOnPage($page, Config::inst()->get('AlgoliaSyncImagesNonlocalised'), $algoliaObject);
            // If Fluent is installed add localised data
-           if (method_exists($page->getLocaleInstances())) {
+           if (method_exists($page, "getLocaleInstances")) {
                 $algoliaObject = $this->addDataForEveryLocale($page, $algoliaObject);
            }
            $dataForAlgolia[] = $algoliaObject;
