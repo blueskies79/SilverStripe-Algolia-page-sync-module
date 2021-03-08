@@ -24,6 +24,6 @@
         }
     },
     "extra": {
-        "installer-name": "algolia-page-sync-module",
+        "installer-name": "algolia-page-sync-module"
     }
 }

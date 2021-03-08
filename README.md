@@ -21,6 +21,7 @@ Via Config it is possible to add fields/images urls that will be synced to an Al
 
 It is possible to add Localised data if you use Fluent. Via config it is possible to add fields/image urls that will be added in the Algolia object in an local object. This makes it possible to use the algolia search with searchattributes and you can add for example as search attributes: Locales.nl_NL and in this object will be the data and Algolia is smart enough to included all the variables in this objct.
 
+It will log to SilverStripe.log and a a record will be created after the task has runned succesfully in the database.
 
 ## Requirements
 
@@ -42,7 +43,13 @@ See [License](license)
 
 ## Configuration
 Via config an extension will be set on the Page Class. This will add an onBeforeDelete action to keep track of the deleted pages.
-Via config it possible to add Fields that will be synced to Algolia.
+Via config it possible to add Fields that will be synced to Algolia. If the field or image excist on the page it will be added no matter the page type
+
+The default values that will be added are:
+* Title
+* MenuTitle
+* PageClass
+* Url
 ```yaml
 Page:
   Extensions:
@@ -62,6 +69,7 @@ Page:
   - AlgoliaSyncModuleDirectLease\PageAlgoliaExtension
 AlgoliaSyncFieldslocalised:
  - "MyAwesomeSearchTextHolder"
+ - "MyAwesomeSearchTextHolder2"
 AlgoliaSyncFieldsNonlocalised:
  - "MyAwesomeSearchTextHolderNonLocalised"
 AlgoliaSyncImageslocalised:
@@ -81,4 +89,6 @@ AlgoliaSyncFieldsNonlocalised:
 AlgoliaSyncImageslocalised:
 AlgoliaSyncImagessNonlocalised:
  - "MyAwesomeImage"
+ - "MyAwesomeImage2"
+
 ```
