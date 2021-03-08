@@ -5,7 +5,6 @@ namespace AlgoliaSyncModuleDirectLease;
 use SilverStripe\CMS\Model\RedirectorPage;
 use SilverStripe\Core\Config\Config;
 use SilverStripe\Versioned\Versioned;
-use TractorCow\Fluent\State\FluentState;
 use SilverStripe\Dev\BuildTask;
 use SilverStripe\Core\Injector\Injector;
 use Psr\Log\LoggerInterface;
@@ -101,7 +100,7 @@ class AlgoliaIndexTask extends BuildTask
     private function addDataForEveryLocale($page, $algoliaObject) {
         $locales = $page->getLocaleInstances();
         foreach ($locales as $locale) {
-            $algoliaObject = FluentState::singleton()
+            $algoliaObject = TractorCow\Fluent\State\FluentState::singleton()
                 ->withState(function (FluentState $state) use ($locale, $page, $algoliaObject) {
                     $state->setLocale($locale->Locale);
                     // we need to get the page again since our fluent context is changed and we want to get the localised data
