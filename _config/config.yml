@@ -1,0 +1,10 @@
+---
+Name: SilverStripe Algolia page sync module
+---
+Page:
+  Extensions:
+    - AlgoliaSyncModuleDirectLease\PageAlgoliaExtension
+AlgoliaSyncFieldslocalised:
+AlgoliaSyncFieldsNonlocalised:
+AlgoliaSyncImageslocalised:
+AlgoliaSyncImagessNonlocalised:
