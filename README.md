@@ -68,6 +68,34 @@ The default values that will be added are:
 * MenuTitle
 * PageClass
 * Url
+
+It is possible to add your own DBFields/functions for localised or non localised fields. It is also possible to add localised or non localised Images if a DataObject has an $has_one relaion to that image. If you wan't to return your own logic for example via a method called getMyAwesomeCustomLogic it is also possible to add this to the fields config
+
+##### AlgoliaSyncFieldslocalised
+An array containing fields of DataBasefields wich values are being synced to Algolia. It is also possible to add your own custom logic functions via getCustomLogic() on the Page class. Since the ORM will forward this function to CustomLogic it is possible to add this to the config
+- "CustomLogic" 
+
+This will result in the algolia object containing this as key->value if the given page has this method and a value for it.
+
+##### AlgoliaSyncFieldsNonlocalised
+An array containing fields of DataBasefields wich values are being synced to Algolia. The difference between this and AlgoliaSyncFieldslocalised is that if Fluent is installed it will put the data in a localised object. The object in Algolia will be Locales->Locale->Key = Value. Instead of Key = value It is also possible to add your own custom logic functions via getCustomLogic() on the Page class. Since the ORM will forward this function to CustomLogic it is possible to add this to the config
+- "CustomLogic" 
+
+This will result in the algolia object containing this as Locales->Locale->key = value if the given page has this method and a value for it.
+
+##### AlgoliaSyncImageslocalised
+An array containing the names of $has_one image relations. If the page has an Image relation and the image is published it the Link() return will be saved in Algolia
+- 'MyImage'
+
+This wil results in MyImage = url.
+
+##### AlgoliaSyncImagesNonlocalised
+An array containing the names of $has_one image relations. If the page has an Image relation and the image is published it the Link() return will be saved in Algolia. The difference between this and AlgoliaSyncImageslocalised is that if Fluent is installed it will put the data in a localised object.
+
+- 'MyImage'
+
+This wil results in Locales->Locale->MyImage = url.
+
 ```yaml
 Page:
   Extensions:
