@@ -71,12 +71,11 @@ class AlgoliaIndexTask extends BuildTask
      *
      * @param $index algolia index
      * @param $pages pages that needs to be added to the index
-     * @param $fluent boolean if fluent is installed
      * @param $update boolean If the sync is an update, if false it creates a PageAlgoliaObjectIDHolder
      * @return int the count of pages being synced
      * @throws \SilverStripe\ORM\ValidationException
      */
-    private function syncPagesWithIndex($index, $pages, $fluent, $update = false) {
+    private function syncPagesWithIndex($index, $pages, $update = false) {
         $dataForAlgolia = [];
         foreach ($pages as $page) {
             $algoliaObject = [];
