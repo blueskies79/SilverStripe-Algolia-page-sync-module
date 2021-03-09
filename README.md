@@ -27,7 +27,7 @@ It will log to SilverStripe.log and a a record will be created after the task ha
 
 * SilverStripe ^4.0
 
-Fluent support 
+Fluent support
 
 
 ## Installation
@@ -39,6 +39,25 @@ composer require silverstripe-module/skeleton 4.x-dev
 
 ## License
 See [License](license)
+
+## How to run
+If a sync hasn't been run yet a full sync will happen. You can schedule this task for any given time period to keep your algolia data up to date.
+####Via browser
+```markdown
+https://mysite.nl/AlgoliaSyncModuleDirectLease-AlgoliaIndexTask # A sync that only pushed the changes
+```
+full sync
+```markdown
+https://mysite.nl/AlgoliaSyncModuleDirectLease-AlgoliaIndexTask?fullsync=1 # For a full sync
+```
+###Via Terminal
+```shell
+php vendor/silverstripe/framework/cli-script.php dev/build 
+```
+full sync
+```shell
+php vendor/silverstripe/framework/cli-script.php dev/build fullsync=1
+```
 
 ## Configuration
 Via config an extension will be set on the Page Class. This will add an onBeforeDelete action to keep track of the deleted pages.
