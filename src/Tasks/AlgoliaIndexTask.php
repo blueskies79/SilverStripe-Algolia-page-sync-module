@@ -10,6 +10,8 @@ use SilverStripe\Core\Injector\Injector;
 use Psr\Log\LoggerInterface;
 use SilverStripe\ORM\DB;
 use Algolia\AlgoliaSearch\SearchClient;
+use TractorCow\Fluent\State\FluentState;
+
 
 /**
  * Class AlgoliaIndexTask Read more https://directlease.atlassian.net/wiki/spaces/DZS/pages/1778253825/AlgoliaIndexTask
@@ -118,7 +120,7 @@ class AlgoliaIndexTask extends BuildTask
     private function addDataForEveryLocale($page, $algoliaObject) {
         $locales = $page->getLocaleInstances();
         foreach ($locales as $locale) {
-            $algoliaObject = TractorCow\Fluent\State\FluentState::singleton()
+            $algoliaObject = FluentState::singleton()
                 ->withState(function (FluentState $state) use ($locale, $page, $algoliaObject) {
                     $state->setLocale($locale->Locale);
                     // we need to get the page again since our fluent context is changed and we want to get the localised data
