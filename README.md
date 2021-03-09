@@ -42,7 +42,7 @@ See [License](license)
 
 ## How to run
 If a sync hasn't been run yet a full sync will happen. You can schedule this task for any given time period to keep your algolia data up to date.
-####Via browser
+#### Via browser
 ```markdown
 https://mysite.nl/AlgoliaSyncModuleDirectLease-AlgoliaIndexTask # A sync that only pushed the changes
 ```
@@ -50,7 +50,7 @@ full sync
 ```markdown
 https://mysite.nl/AlgoliaSyncModuleDirectLease-AlgoliaIndexTask?fullsync=1 # For a full sync
 ```
-###Via Terminal
+### Via Terminal
 ```shell
 php vendor/silverstripe/framework/cli-script.php dev/build 
 ```
