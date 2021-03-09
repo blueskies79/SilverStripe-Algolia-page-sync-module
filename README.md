@@ -111,7 +111,7 @@ AlgoliaSyncImagesNonlocalised:
 ```
 
 
-## Example configuration (optional)
+## Example configurations
 A Config with Fluent support 
 ```yaml
 ---
