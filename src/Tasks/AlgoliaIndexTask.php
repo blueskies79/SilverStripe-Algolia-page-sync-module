@@ -35,7 +35,7 @@ class AlgoliaIndexTask extends BuildTask
             Config::inst()->get('AlgoliaKeys', 'indexName')
         );
         // Check if Fluent is installed if it is enabled will add locales object to algolia containing localised data
-        $this->fluent_enabled = Page::has_extension("TractorCow\Fluent\Extension\FluentExtension");
+        $this->fluent_enabled = \Page::has_extension("TractorCow\Fluent\Extension\FluentExtension");
         // do either a fullsync add/remove all algolia data or sync the changes from the last task
         if($request->getVar('fullsync')) {
             $this->fullSync($index);
